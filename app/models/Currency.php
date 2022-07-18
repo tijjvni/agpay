@@ -118,8 +118,8 @@
       $stmt-> bindParam(':symbol', $this->symbol);
 
       // Execute query
-      if($stmt->execute()) {
-        return true;
+      if($stmt = $stmt->execute()) {
+        return $stmt;
       }
 
       // Print error if something goes wrong
@@ -223,5 +223,29 @@
     }
   }
 
+  // Delete Post
+  public function delete() {
+    // Create query
+    $query = 'DELETE FROM ' . $this->table . ' WHERE iso_code = :iso_code';
+
+    // Prepare statement
+    $stmt = $this->conn->prepare($query);
+
+    // Clean data
+    $this->iso_code = htmlspecialchars(strip_tags($this->iso_code));
+
+    // Bind data
+    $stmt->bindParam(':iso_code', $this->iso_code);
+
+    // Execute query
+    if($stmt->execute()) {
+      return true;
+    }
+
+    // Print error if something goes wrong
+    printf("Error: %s.\n", $stmt->error);
+
+    return false;
+  }
 
 }

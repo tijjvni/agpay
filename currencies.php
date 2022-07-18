@@ -1,5 +1,5 @@
 <h5>Upload Currency CSV</h5>
-<form action="<?php echo $server; ?>/api/currencies/upload.php" method="post" enctype="multipart/form-data">
+<form action="<?php echo $server; ?>/app/api/currencies/upload.php" method="post" enctype="multipart/form-data">
     <div class="input-group">
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput" name="currencies">
@@ -30,9 +30,9 @@
 
 		if(isset($_GET['q']) && !empty($_GET['q'])){
 			$search = $_GET['q'];
-			$api_url = $server.'/api/currencies/search.php?q='.$search.'&page='.$page;
+			$api_url = $server.'/app/api/currencies/search.php?q='.$search.'&page='.$page;
 		}else {
-			$api_url = $server.'/api/currencies/get.php?page='.$page; 
+			$api_url = $server.'/app/api/currencies/get.php?page='.$page; 
 		}
 
 		// Read JSON file

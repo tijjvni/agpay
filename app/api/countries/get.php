@@ -5,7 +5,7 @@
   header('Access-Control-Allow-Methods: GET');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
-  include_once '../../config/Database.php';
+  include_once '../../../config/Database.php';
   include_once '../../models/Country.php';
 
 
@@ -14,7 +14,7 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate country object
+  // Instantiate county object
   $country = new Country($db);
 
   // check page_number
@@ -30,17 +30,16 @@
   }
 
 
+
   $country->page['number'] = $page;
-  $country->search = $_GET['q'];
 
-
-  //Country read query
-  $result = $country->search();
+  // Country read query
+  $result = $country->get_all();
   
   // Get row count
   $num = $result->rowCount();
 
-  // Check if any currencies
+  // Check if there is any countries
   if($num > 0) {
     // country array
     $country_arr = array();
@@ -51,6 +50,7 @@
       extract($row);
 
       $countr = array(
+        'id' => $id,
         'continent_code' => $continent_code,
         'currency_code' => $currency_code,
         'iso2_code' => $iso2_code,
@@ -70,14 +70,13 @@
 
     $country_arr['meta'] = paginate($country->rowCount(),$page,$country->page['size']);
 
-    // Turn to JSON & output
     echo json_encode($country_arr);
 
   } else {
-        // No Currencies
-        echo json_encode(
-          array('message' => 'No Result Found for "<strong>'.$_GET['q'].'</strong>"')
-        );
+    // No countries
+    echo json_encode(
+      array('message' => 'No Country Found')
+    );
   }
 
   function paginate($total, $page = 0, $per_page = 10){
@@ -104,3 +103,6 @@
       )
     );
   }
+
+
+

@@ -288,5 +288,30 @@
     }
   }
 
+  // Delete Country
+  public function delete() {
+    // Create query
+    $query = 'DELETE FROM ' . $this->table . ' WHERE iso3_code = :iso3_code';
+
+    // Prepare statement
+    $stmt = $this->conn->prepare($query);
+
+    // Clean data
+    $this->iso3_code = htmlspecialchars(strip_tags($this->iso3_code));
+
+    // Bind data
+    $stmt->bindParam(':iso3_code', $this->iso3_code);
+
+    // Execute query
+    if($stmt->execute()) {
+      return true;
+    }
+
+    // Print error if something goes wrong
+    printf("Error: %s.\n", $stmt->error);
+
+    return false;
+  }
+
 
 }

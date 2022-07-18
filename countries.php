@@ -1,6 +1,6 @@
 
 <h5>Upload Countries CSV</h5>
-<form action="<?php echo $server; ?>/api/countries/upload.php" method="post" enctype="multipart/form-data">
+<form action="<?php echo $server; ?>/app/api/countries/upload.php" method="post" enctype="multipart/form-data">
     <div class="input-group">
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput" name="countries">
@@ -37,9 +37,9 @@
 
 		if(isset($_GET['q']) && !empty($_GET['q'])){
 			$search = $_GET['q'];
-			$api_url = $server.'/api/countries/search.php?q='.$search.'&page='.$page;
+			$api_url = $server.'/app/api/countries/search.php?q='.$search.'&page='.$page;
 		}else {
-			$api_url = $server.'/api/countries/get.php?page='.$page; 
+			$api_url = $server.'/app/api/countries/get.php?page='.$page; 
 		}
 
 

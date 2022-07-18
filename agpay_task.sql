@@ -1,8 +1,8 @@
 
 
--- CREATE Database agpay_task;
+CREATE Database agpay_task;
 
--- USE agpay_task;
+USE agpay_task;
 
 
 -- --------------------------------------------------------

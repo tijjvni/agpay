@@ -5,7 +5,7 @@
   header('Access-Control-Allow-Methods: GET');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
-  include_once '../../config/Database.php';
+  include_once '../../../config/Database.php';
   include_once '../../models/Currency.php';
 
 
@@ -29,49 +29,48 @@
     $page = 1;
   }
 
-
   $currency->page['number'] = $page;
+  $currency->search = $_GET['q'];
+
 
   // Cuurency read query
-  $result = $currency->get_all();
+  $result = $currency->search();
   
   // Get row count
   $num = $result->rowCount();
 
-    // echo 'tj';die();
-
-  // Check if there is any currencies
+  // Check if any currencies
   if($num > 0) {
-    // Curr array
-    $currency_arr = array();
-    $currency_arr['data'] = array();
+        // Curr array
+        $currency_arr = array();
+        $currency_arr['data'] = array();
 
-    // loop through fetched currencies
-    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-      extract($row);
+        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+          extract($row);
 
-      $curr = array(
-        'id' => $id,
-        'iso_code' => $iso_code,
-        'iso_numeric_code' => $iso_numeric_code,
-        'common_name' => $common_name,
-        'official_name' => $official_name,
-        'symbol' => $symbol
-      );
+          $curr = array(
+            'id' => $id,
+            'iso_code' => $iso_code,
+            'iso_numeric_code' => $iso_numeric_code,
+            'common_name' => $common_name,
+            'official_name' => $official_name,
+            'symbol' => $symbol
+          );
 
-      // Push to "data"
-      array_push($currency_arr['data'], $curr);
-    }
+          // Push to "data"
+          array_push($currency_arr['data'], $curr);
+        }
 
-    $currency_arr['meta'] = paginate($currency->rowCount(),$page,$currency->page['size']);
+        $currency_arr['meta'] = paginate($currency->rowCount(),$page,$currency->page['size']);
 
-    echo json_encode($currency_arr);
+        // Turn to JSON & output
+        echo json_encode($currency_arr);
 
   } else {
-    // No Currencies
-    echo json_encode(
-      array('message' => 'No Currencies Found')
-    );
+        // No Currencies
+        echo json_encode(
+          array('message' => 'No Result Found for "<strong>'.$_GET['q'].'</strong>"')
+        );
   }
 
   function paginate($total, $page = 0, $per_page = 10){
@@ -98,6 +97,3 @@
       )
     );
   }
-
-
-
